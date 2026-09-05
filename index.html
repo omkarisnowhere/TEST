@@ -17,6 +17,7 @@
         <a class="brand" href="#top">OMKAR <span>TUPE</span></a>
         <div class="nav-links">
           <a href="#about">About</a>
+          <a href="#work">Work</a>
           <a href="https://medium.com/@omkartupe36">Blog <span>↗</span></a>
           <a href="#contact">Get in touch</a>
         </div>
@@ -59,6 +60,24 @@
         </aside>
       </section>
 
+      <section class="work" id="work">
+        <aside class="work-rail">
+          <p class="section-label">03 — WORK</p>
+        </aside>
+        <div class="work-main">
+          <p class="work-kicker">INTERNSHIP EXPERIENCE</p>
+          <h2>Learning by<br /><em>building.</em></h2>
+          <div class="certificate-viewer">
+            <p class="certificate-label">INTERNSHIP CERTIFICATE · PDF</p>
+            <object class="certificate-document" data="internship-certificate.pdf#view=FitH" type="application/pdf">
+              <p>Your browser cannot preview this PDF. <a href="internship-certificate.pdf" target="_blank" rel="noopener">Open the internship certificate ↗</a></p>
+            </object>
+            <a class="certificate-link" href="internship-certificate.pdf" target="_blank" rel="noopener">Open full certificate <span>↗</span></a>
+          </div>
+          <p class="work-copy">During this one-month intensive role, I engineered systems to map digital-channel agencies and agents, directly supporting the company’s market-penetration strategy. This project was a critical step in translating the foundational engineering skills I built at college into functional, real-world software. I am incredibly grateful to Sandeep Kakde for his mentorship in helping me navigate these practical challenges.</p>
+        </div>
+      </section>
+
       <section class="contact" id="contact">
         <div class="contact-heading">
           <p class="section-label">03 — GET IN TOUCH</p>
@@ -76,6 +95,7 @@
           <label>Subject <input type="text" name="subject" placeholder="What is this about?" /></label>
           <label>Message <span>*</span><textarea name="message" placeholder="Your message..." required></textarea></label>
           <button type="submit">Send message <span>→</span></button>
+          <p class="form-status" role="status" aria-live="polite"></p>
         </form>
       </section>
       <footer><span>© 2025 OMKAR TUPE</span><span>DESIGNED WITH INTENTION</span><a href="#top">BACK TO TOP ↑</a></footer>
@@ -93,25 +113,41 @@
       updateScrollProgress();
 
       const contactForm = document.querySelector('.contact-form');
-      contactForm.addEventListener('submit', (event) => {
+      const formStatus = contactForm.querySelector('.form-status');
+      const submitButton = contactForm.querySelector('button[type="submit"]');
+      contactForm.addEventListener('submit', async (event) => {
         event.preventDefault();
-        const fields = new FormData(contactForm);
-        const details = [
-          `Name: ${fields.get('name')}`,
-          `Email: ${fields.get('email')}`,
-          `Phone: ${fields.get('phone') || 'Not provided'}`,
-          `Company: ${fields.get('company') || 'Not provided'}`,
-          '',
-          fields.get('message')
-        ].join('\n');
-        const subject = fields.get('subject') || 'New portfolio enquiry';
-        const gmailUrl = new URL('https://mail.google.com/mail/');
-        gmailUrl.searchParams.set('view', 'cm');
-        gmailUrl.searchParams.set('fs', '1');
-        gmailUrl.searchParams.set('to', 'omkartupe36@gmail.com');
-        gmailUrl.searchParams.set('su', subject);
-        gmailUrl.searchParams.set('body', details);
-        window.location.href = gmailUrl.toString();
+        const formData = Object.fromEntries(new FormData(contactForm));
+        formData._subject = formData.subject || 'New portfolio enquiry';
+        formData._template = 'table';
+        submitButton.disabled = true;
+        submitButton.textContent = 'Sending…';
+        formStatus.textContent = '';
+
+        try {
+          if (window.location.protocol === 'file:') {
+            throw new Error('Please open the published website to send a message.');
+          }
+          formData._url = window.location.href;
+          const response = await fetch('https://formsubmit.co/ajax/omkartupe36@gmail.com', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify(formData)
+          });
+          const result = await response.json().catch(() => ({}));
+          if (!response.ok || result.success === false) {
+            throw new Error(result.message || 'Unable to send message. Please try again.');
+          }
+          contactForm.reset();
+          formStatus.textContent = 'Thanks — your message has been sent.';
+          formStatus.classList.add('is-success');
+        } catch (error) {
+          formStatus.textContent = error.message || 'Sorry, something went wrong. Please try again.';
+          formStatus.classList.remove('is-success');
+        } finally {
+          submitButton.disabled = false;
+          submitButton.innerHTML = 'Send message <span>→</span>';
+        }
       });
     </script>
   </body>
