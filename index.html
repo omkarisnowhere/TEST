@@ -18,8 +18,9 @@
         <div class="nav-links">
           <a href="#about">About</a>
           <a href="#work">Work</a>
-          <a href="https://medium.com/@omkartupe36">Blog <span>↗</span></a>
+          <a href="blog.html">Blog</a>
           <a href="#contact">Get in touch</a>
+          <button class="theme-toggle" type="button" aria-label="Switch to dark theme" title="Switch to dark theme"><span aria-hidden="true">☾</span></button>
         </div>
         <div class="scroll-progress" aria-hidden="true"><span></span></div>
       </nav>
@@ -111,6 +112,21 @@
       window.addEventListener('scroll', updateScrollProgress, { passive: true });
       window.addEventListener('resize', updateScrollProgress);
       updateScrollProgress();
+
+      const themeToggle = document.querySelector('.theme-toggle');
+      const themeIcon = themeToggle.querySelector('span');
+      const setTheme = (theme) => {
+        const isDark = theme === 'dark';
+        document.body.classList.toggle('dark-theme', isDark);
+        themeIcon.textContent = isDark ? '☀' : '☾';
+        themeToggle.setAttribute('aria-label', isDark ? 'Switch to light theme' : 'Switch to dark theme');
+        themeToggle.title = themeToggle.getAttribute('aria-label');
+        try { localStorage.setItem('portfolio-theme', theme); } catch (_) {}
+      };
+      let preferredTheme = 'light';
+      try { preferredTheme = localStorage.getItem('portfolio-theme') || preferredTheme; } catch (_) {}
+      setTheme(preferredTheme);
+      themeToggle.addEventListener('click', () => setTheme(document.body.classList.contains('dark-theme') ? 'light' : 'dark'));
 
       const contactForm = document.querySelector('.contact-form');
       const formStatus = contactForm.querySelector('.form-status');
