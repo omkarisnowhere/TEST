@@ -28,7 +28,7 @@
       <section class="hero" id="top">
         <div class="portrait-wrap">
           <div class="portrait-meta"><span>01 — BUILDER</span><span>INDIA / 2025</span></div>
-          <img src="omkar-tupe-cutout.png" alt="Portrait of Omkar Tupe" class="portrait" />
+          <img src="omkar-tupe.png" alt="Portrait of Omkar Tupe" class="portrait" />
           <p class="portrait-caption">A curious mind with an unfair bias toward making things useful.</p>
         </div>
         <div class="hero-copy">
@@ -85,22 +85,51 @@
           <h2>Let’s build<br /><em>something useful.</em></h2>
           <p>Have an idea or opportunity? Leave a note and I’ll get back to you.</p>
         </div>
-        <form class="contact-form">
+        <form class="contact-form" action="https://formsubmit.co/omkartupe36@gmail.com" method="POST">
           <p class="form-kicker">// OR DROP A NOTE RIGHT HERE</p>
           <div class="form-grid">
             <label>Name <span>*</span><input type="text" name="name" placeholder="Your name" required /></label>
             <label>Email <span>*</span><input type="email" name="email" placeholder="your@email.com" required /></label>
-            <label>Phone <input type="number" name="phone" placeholder="Optional" inputmode="numeric" min="0" step="1" /></label>
+            <label>Phone <input type="tel" name="phone" placeholder="Optional" inputmode="tel" autocomplete="tel" /></label>
             <label>Company <input type="text" name="company" placeholder="Optional" /></label>
           </div>
           <label>Subject <input type="text" name="subject" placeholder="What is this about?" /></label>
           <label>Message <span>*</span><textarea name="message" placeholder="Your message..." required></textarea></label>
+          <input class="form-honeypot" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
           <button type="submit">Send message <span>→</span></button>
           <p class="form-status" role="status" aria-live="polite"></p>
         </form>
       </section>
-      <footer><span>© 2025 OMKAR TUPE</span><span>DESIGNED WITH INTENTION</span><a href="#top">BACK TO TOP ↑</a></footer>
+      <footer><a href="#top">BACK TO TOP ↑</a></footer>
     </main>
+
+    <div class="om-ai" data-open="false">
+      <button class="om-ai-toggle" type="button" aria-expanded="false" aria-controls="om-ai-panel">
+        <span class="om-ai-toggle-icon" aria-hidden="true">✦</span>
+        <span>Ask Om AI</span>
+      </button>
+      <section class="om-ai-panel" id="om-ai-panel" aria-label="Om AI assistant" aria-hidden="true">
+        <header class="om-ai-header">
+          <div>
+            <p>OM AI <span>● ONLINE</span></p>
+            <h2>Ask about Omkar</h2>
+          </div>
+          <button class="om-ai-close" type="button" aria-label="Close Om AI">×</button>
+        </header>
+        <div class="om-ai-messages" aria-live="polite" aria-relevant="additions"></div>
+        <div class="om-ai-suggestions" aria-label="Suggested questions">
+          <button type="button">Who is Omkar?</button>
+          <button type="button">What is his view on AI?</button>
+          <button type="button">How can I contact him?</button>
+        </div>
+        <form class="om-ai-form">
+          <label class="sr-only" for="om-ai-input">Ask Om AI a question</label>
+          <input id="om-ai-input" type="text" placeholder="Ask Om AI..." autocomplete="off" required />
+          <button type="submit" aria-label="Send question">↑</button>
+        </form>
+      </section>
+    </div>
+
     <script>
       const scrollProgress = document.querySelector('.scroll-progress span');
       const updateScrollProgress = () => {
@@ -164,6 +193,71 @@
           submitButton.disabled = false;
           submitButton.innerHTML = 'Send message <span>→</span>';
         }
+      });
+
+      const omAi = document.querySelector('.om-ai');
+      const omAiToggle = document.querySelector('.om-ai-toggle');
+      const omAiPanel = document.querySelector('.om-ai-panel');
+      const omAiClose = document.querySelector('.om-ai-close');
+      const omAiMessages = document.querySelector('.om-ai-messages');
+      const omAiForm = document.querySelector('.om-ai-form');
+      const omAiInput = document.querySelector('#om-ai-input');
+
+      const addOmAiMessage = (text, sender) => {
+        const message = document.createElement('p');
+        message.className = `om-ai-message om-ai-message--${sender}`;
+        message.textContent = text;
+        omAiMessages.append(message);
+        omAiMessages.scrollTop = omAiMessages.scrollHeight;
+      };
+
+      const answerOmAiQuestion = (question) => {
+        const query = question.toLowerCase().replace(/[^a-z0-9 ]/g, ' ');
+        if (/\b(hi|hello|hey)\b/.test(query)) return 'Hi! I’m Om AI. I can tell you about Omkar’s background, work, skills, and how to get in touch.';
+        if (/\b(who|about|background|person)\b/.test(query)) return 'Omkar Tupe is an aspiring AI/ML engineer, an IT student, and a builder of side projects. He is especially interested in AI that adapts, learns, and becomes genuinely useful to people.';
+        if (/\b(school|schooling|podar|icse|tenth|10th|eleventh|11th|twelfth|12th|state board|maharashtra board)\b/.test(query)) return 'Omkar completed school through 10th standard at Podar International School (ICSE), then completed 11th and 12th through the Maharashtra State Board.';
+        if (/\b(study|college|education|degree|graduate|graduation|university|sppu|jspm|engineering|information technology|it |2027)\b/.test(query)) return 'Omkar is currently pursuing a Bachelor of Engineering in Information Technology at JSPM’s College of Engineering under SPPU. He expects to complete the degree in 2027.';
+        if (/\b(project|projects|side project|portfolio)\b/.test(query)) return 'Alongside his studies, Omkar builds side projects to put his AI/ML learning into practice and show what he can create.';
+        if (/\b(team|teamwork|leadership|leader|deadline|stress|collaborat|mistake)\b/.test(query)) return 'Omkar values teamwork and strong leadership. He aims to contribute as much as he can, work calmly under real deadlines, help teammates, learn from mistakes, and keep moving forward.';
+        if (/\b(llm|rag|agent|agents|learning now|currently learning)\b/.test(query)) return 'Omkar is currently learning about LLMs and RAG frameworks, and is building an AI agent to demonstrate his potential.';
+        if (/\b(skill|skills|technology|tech|tools|expertise|good at)\b/.test(query)) return 'Omkar is developing skills in AI/ML, LLMs, RAG frameworks, AI agents, data and model integration, cloud deployment, and intelligent workflows.';
+        if (/\b(work|does he do|focus|interested|service|services|build)\b/.test(query)) return 'Omkar focuses on practical AI/ML work. He is learning how to build AI agents and enjoys turning ideas into useful software, especially through automation, cloud deployment, and intelligent workflows.';
+        if (/\b(ai |artificial intelligence|what is ai|adapt|child brain|kids brain|machine learning|ml |algorithm|data|mistake|model)\b/.test(query)) return 'Omkar sees AI as a child’s brain: not fully developed, but able to learn through adaptation. In his view, structured and unstructured data help AI learn, while newer models tend to make fewer mistakes than earlier versions. He sees machine learning as repeated learning through algorithms.';
+        if (/\b(experience|internship|certificate|agikya|agency|agencies|sandeep|market)\b/.test(query)) return 'Omkar completed an internship at AGIKYA Technologies. During an intensive one-month role, he engineered systems to map digital-channel agencies and agents in support of a market-penetration strategy.';
+        if (/\b(location|live|based|pune|india|city)\b/.test(query)) return 'Omkar is based in Pune, Maharashtra, India, and is open to opportunities.';
+        if (/\b(research|history|invention|motivation|world|help|helping|value|values)\b/.test(query)) return 'Omkar enjoys learning beyond technology—about how the world works, inventions, history, and the people behind progress. He brings that research and motivation into his work, and believes helping others is fundamental in teams and everyday life.';
+        if (/\b(contact|email|reach|hire|opportunity|job|position|message|talk)\b/.test(query)) return 'Omkar is looking for opportunities after completing his degree in 2027. You can use the “Get in touch” form on this page to discuss a role, project, or collaboration.';
+        if (/\b(blog|article|write|writing)\b/.test(query)) return 'You can find Omkar’s writing through the Blog link in the navigation.';
+        return 'I only answer questions about Omkar and this website. Try asking about his background, skills, experience, location, or how to contact him.';
+      };
+
+      const setOmAiOpen = (open) => {
+        omAi.dataset.open = open;
+        omAiToggle.setAttribute('aria-expanded', String(open));
+        omAiPanel.setAttribute('aria-hidden', String(!open));
+        if (open) {
+          if (!omAiMessages.children.length) addOmAiMessage('Hi, I’m Om AI. Ask me anything about Omkar’s work, background, or how to connect.', 'bot');
+          omAiInput.focus();
+        }
+      };
+
+      omAiToggle.addEventListener('click', () => setOmAiOpen(omAi.dataset.open !== 'true'));
+      omAiClose.addEventListener('click', () => setOmAiOpen(false));
+      document.addEventListener('keydown', (event) => { if (event.key === 'Escape') setOmAiOpen(false); });
+      document.querySelectorAll('.om-ai-suggestions button').forEach((button) => {
+        button.addEventListener('click', () => {
+          const question = button.textContent;
+          addOmAiMessage(question, 'user');
+          addOmAiMessage(answerOmAiQuestion(question), 'bot');
+        });
+      });
+      omAiForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const question = omAiInput.value.trim();
+        if (!question) return;
+        addOmAiMessage(question, 'user');
+        omAiInput.value = '';
+        window.setTimeout(() => addOmAiMessage(answerOmAiQuestion(question), 'bot'), 180);
       });
     </script>
   </body>
