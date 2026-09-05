@@ -20,6 +20,7 @@
           <a href="#about">About</a>
           <a href="mailto:hello@omkartupe.com">Get in touch <span>↗</span></a>
         </div>
+        <div class="scroll-progress" aria-hidden="true"><span></span></div>
       </nav>
 
       <section class="hero" id="top">
@@ -41,10 +42,9 @@
       <section class="statement" id="about">
         <aside class="about-rail">
           <p class="section-label">02 — ABOUT</p>
-          <div class="about-timeline"><span>01+</span></div>
         </aside>
         <div class="about-main">
-          <p class="about-lead"><strong class="degree-line">B.E. graduate from JSPM’s College of Engineering, under SPPU.</strong><br /><strong>1+ years of experience building AI projects designed for real users, real data, and real-world challenges.</strong></p>
+          <p class="about-lead"><strong class="degree-line">B.E. graduate from JSPM’s College of Engineering, under SPPU.</strong><br /><strong class="experience-line">1+ years of experience building AI projects designed for<br />real users, real data, and real-world challenges.</strong></p>
           <div class="about-copy">
             <p>My work focuses on building practical machine learning applications and integrating AI models into software that people can actually use. I enjoy working across the process — from building reliable data pipelines and working with models to deploying them in cloud environments.</p>
             <p>I care about finding the right balance between <strong>accuracy, speed, and cost</strong>, rather than building AI just for the sake of it. My goal is to turn ideas and experiments into reliable, useful products that solve real problems.</p>
@@ -83,5 +83,17 @@
       </section>
       <footer><span>© 2025 OMKAR TUPE</span><span>DESIGNED WITH INTENTION</span><a href="#top">BACK TO TOP ↑</a></footer>
     </main>
+    <script>
+      const scrollProgress = document.querySelector('.scroll-progress span');
+      const updateScrollProgress = () => {
+        const maximumScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = maximumScroll > 0 ? (window.scrollY / maximumScroll) * 100 : 0;
+        scrollProgress.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+      };
+
+      window.addEventListener('scroll', updateScrollProgress, { passive: true });
+      window.addEventListener('resize', updateScrollProgress);
+      updateScrollProgress();
+    </script>
   </body>
 </html>
