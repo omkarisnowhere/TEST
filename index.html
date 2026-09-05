@@ -16,9 +16,9 @@
       <nav aria-label="Primary navigation">
         <a class="brand" href="#top">OMKAR <span>TUPE</span></a>
         <div class="nav-links">
-          <a href="#work">Selected work</a>
           <a href="#about">About</a>
-          <a href="mailto:hello@omkartupe.com">Get in touch <span>↗</span></a>
+          <a href="https://medium.com/@omkartupe36">Blog <span>↗</span></a>
+          <a href="#contact">Get in touch</a>
         </div>
         <div class="scroll-progress" aria-hidden="true"><span></span></div>
       </nav>
@@ -34,7 +34,7 @@
           <h1>You need AI<br />that <em>works.</em><br /><strong>I build it.</strong></h1>
           <div class="hero-bottom">
             <p>I turn ambitious ideas into intelligent products people actually want to use.</p>
-            <a class="round-link" href="#work" aria-label="Explore selected work">↓</a>
+            <a class="round-link" href="#about" aria-label="Explore about">↓</a>
           </div>
         </div>
       </section>
@@ -59,27 +59,24 @@
         </aside>
       </section>
 
-      <section class="work" id="work">
-        <div class="work-heading">
-          <p class="section-label">03 — SELECTED WORK</p>
-          <p>Ideas in motion. Built for real people.</p>
+      <section class="contact" id="contact">
+        <div class="contact-heading">
+          <p class="section-label">03 — GET IN TOUCH</p>
+          <h2>Let’s build<br /><em>something useful.</em></h2>
+          <p>Have an idea or opportunity? Leave a note and I’ll get back to you.</p>
         </div>
-        <article class="project project-dark">
-          <span class="project-number">01</span>
-          <div><p class="project-type">CONVERSATIONAL AI</p><h2>Useful, not just<br />impressive.</h2></div>
-          <a href="mailto:hello@omkartupe.com?subject=Let's talk" class="project-link">Let’s talk <span>↗</span></a>
-        </article>
-        <article class="project project-light">
-          <span class="project-number">02</span>
-          <div><p class="project-type">INTELLIGENT SYSTEMS</p><h2>Built around<br />what matters.</h2></div>
-          <span class="project-note">More stories soon</span>
-        </article>
-      </section>
-
-      <section class="contact">
-        <p class="section-label">04 — HAVE A REAL PROBLEM?</p>
-        <h2>Let's make it<br /><em>work.</em></h2>
-        <a href="mailto:hello@omkartupe.com" class="email">hello@omkartupe.com <span>↗</span></a>
+        <form class="contact-form">
+          <p class="form-kicker">// OR DROP A NOTE RIGHT HERE</p>
+          <div class="form-grid">
+            <label>Name <span>*</span><input type="text" name="name" placeholder="Your name" required /></label>
+            <label>Email <span>*</span><input type="email" name="email" placeholder="your@email.com" required /></label>
+            <label>Phone <input type="number" name="phone" placeholder="Optional" inputmode="numeric" min="0" step="1" /></label>
+            <label>Company <input type="text" name="company" placeholder="Optional" /></label>
+          </div>
+          <label>Subject <input type="text" name="subject" placeholder="What is this about?" /></label>
+          <label>Message <span>*</span><textarea name="message" placeholder="Your message..." required></textarea></label>
+          <button type="submit">Send message <span>→</span></button>
+        </form>
       </section>
       <footer><span>© 2025 OMKAR TUPE</span><span>DESIGNED WITH INTENTION</span><a href="#top">BACK TO TOP ↑</a></footer>
     </main>
@@ -94,6 +91,28 @@
       window.addEventListener('scroll', updateScrollProgress, { passive: true });
       window.addEventListener('resize', updateScrollProgress);
       updateScrollProgress();
+
+      const contactForm = document.querySelector('.contact-form');
+      contactForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const fields = new FormData(contactForm);
+        const details = [
+          `Name: ${fields.get('name')}`,
+          `Email: ${fields.get('email')}`,
+          `Phone: ${fields.get('phone') || 'Not provided'}`,
+          `Company: ${fields.get('company') || 'Not provided'}`,
+          '',
+          fields.get('message')
+        ].join('\n');
+        const subject = fields.get('subject') || 'New portfolio enquiry';
+        const gmailUrl = new URL('https://mail.google.com/mail/');
+        gmailUrl.searchParams.set('view', 'cm');
+        gmailUrl.searchParams.set('fs', '1');
+        gmailUrl.searchParams.set('to', 'omkartupe36@gmail.com');
+        gmailUrl.searchParams.set('su', subject);
+        gmailUrl.searchParams.set('body', details);
+        window.location.href = gmailUrl.toString();
+      });
     </script>
   </body>
 </html>
